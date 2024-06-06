@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -7,9 +8,6 @@ public class App {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-
-        int menu;
-        String bannedName[] = { "새로", "새로고침", "생존신고", "친구코드", "코드", "친구", "생존신고", "생존", "프로필", "친구추가", "추가" };
 
         // test를 위한 더미 유저 정보
         user = new User("test", "test", "테스터");
@@ -52,14 +50,14 @@ public class App {
             System.out.print("> ");
             String ex = sc.nextLine(); // 새로고침, 친구코드, 생존신고, 프로필편집, 친구추가, 친구이름
             switch (ex) {
-                case "새로고침", "새로":
+                case "새로고침":
                     load();
                     break;
-                case "친구코드", "코드":
+                case "친구코드":
                     load();
                     System.out.println("친구코드(복사해서 쓰세요): " + user.getCode());
                     break;
-                case "생존신고", "신고", "생존":
+                case "생존신고":
                     user.setLastSR();
                     load();
                     System.out.println(user.getLastSR() + "로 갱신되었습니다.");
@@ -72,7 +70,7 @@ public class App {
                     System.out.println(name + "으로 변경되었습니다.");
                     //
                     break;
-                case "친구추가", "추가":
+                case "친구추가":
                     System.out.print("친구의 코드를 입력하세요: ");
                     int code;
                     try {
@@ -94,7 +92,7 @@ public class App {
 
                     //
                     break;
-                case "로그아웃", "logout":
+                case "로그아웃":
                     System.out.println("로그아웃 되었습니다!");
                     login();
                     load();
@@ -142,6 +140,7 @@ public class App {
         int menu;
 
         while (true) {
+
             System.out.print("1: 로그인 2: 회원가입 > ");
             menu = Integer.parseInt(sc.nextLine());
             if (menu == 1) {
@@ -164,11 +163,20 @@ public class App {
                 }
 
             } else if (menu == 2) {
+                ArrayList<String> bannedName = new ArrayList<>();
+                bannedName.add("새로고침");
+                bannedName.add("생존신고");
+                bannedName.add("친구코드");
+                bannedName.add("프로필");
+                bannedName.add("친구추가");
+                bannedName.add("로그아웃");
+
                 String id;
                 String pw;
                 String name;
                 System.out.print("id: ");
                 id = sc.nextLine();
+         
                 while (User.users.containsKey(id)) {
                     System.out.print("중복된 id입니다.\nid: ");
                     id = sc.nextLine();
@@ -177,6 +185,10 @@ public class App {
                 pw = sc.nextLine();
                 System.out.print("name: ");
                 name = sc.nextLine();
+                while (bannedName.contains(name)) {
+                    System.out.print("사용할 수 없는 name입니다.\nname: ");
+                    name = sc.nextLine();
+                }
                 User.users.put(id, new User(id, pw, name));
                 System.out.println(name + "님 환영합니다! 다시 로그인해주세요.");
             }
